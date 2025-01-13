@@ -1,9 +1,8 @@
-const mongoose = require('mongoose'); // מייבא את ספריית Mongoose
+const mongoose = require('mongoose'); 
 
-// פונקציית חיבור למסד נתונים
 const connectDB = async () => {
   try {
-    // חיבור למסד הנתונים
+    // DB connection
     const conn = await mongoose.connect(process.env.MONGO_URI, { 
         useNewUrlParser: true, 
         useUnifiedTopology: true 
@@ -13,8 +12,8 @@ const connectDB = async () => {
 
   } catch (err) {
     console.error(`Error: ${err.message}`);
-    process.exit(1); // יציאה עם שגיאה
+    process.exit(1); 
   }
 };
 
-module.exports = connectDB; // יצוא הפונקציה
+module.exports = connectDB; 

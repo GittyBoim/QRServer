@@ -40,7 +40,7 @@ const addQr = async (req, res) => {
     user.qrs.push(newQr);
     await user.save();
 
-    // יצירת URL ל-API של Google Chart API ליצירת QR
+    // Generate a URL to the Google Chart API to generate a QR
     const qrUrl = `https://unlosted/${newQr._id}`;
     const googleQRUrl = `https://quickchart.io/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(qrUrl)}`;
     const response = await axios.get(googleQRUrl, { responseType: 'arraybuffer' });

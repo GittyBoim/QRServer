@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-// Middleware לאימות טוקן
+// Token authentication middleware
 const authenticateToken = (req, res, next) => {
   const token = req.headers['authorization'];
 
@@ -9,9 +9,9 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    // בדיקת הטוקן
+    // Token verify
     const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified; // שמירת פרטי המשתמש ב-request
+    req.user = verified; // Saving user information in the request
     next();
   } catch (err) {
     res.status(403).json({ message: 'Invalid or expired token' });

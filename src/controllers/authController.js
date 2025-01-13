@@ -2,28 +2,27 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
-// פונקציה לטיפול בהתחברות משתמש
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // חיפוש משתמש לפי אימייל
+    // User search by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // בדיקת סיסמה
+    // Password check
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // יצירת JWT
+    // Generate JWT
     const token = jwt.sign(
-      { userId: user._id, email: user.email }, // הנתונים שייכנסו לטוקן
-      process.env.JWT_SECRET, // מפתח סודי (חשוב להגן עליו)
-      { expiresIn: '1h' } // תוקף הטוקן
+      { userId: user._id, email: user.email }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' } 
     );
 
     res.status(200).json({ token });
@@ -41,13 +40,13 @@ const register = async (req, res) => {
   }
 
   try {
-    // יצירת משתמש חדש דרך קונטרולר ה-User
+    // Creating a new user via userController
     const newUser = await UserController.addUser(name, email, password, address, phone);
 
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' } // תוקף של שעה לטוקן
+      { expiresIn: '1h' } 
     );
     res.status(201).json({
       user: {
