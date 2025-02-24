@@ -7,6 +7,9 @@ const userRoutes = require('./src/routes/userRoutes');
 const qrRoutes = require('./src/routes/qrRoutes');
 const authRoutes = require('./src/routes/authRoutes');
 const authGoogleRoutes = require('./src/routes/authGoogleRoutes');
+const companyRoutes = require('./src/routes/companyRoutes');
+const authCompanyRoutes = require('./src/routes/authCompanyRoutes');
+
 const cors = require("cors");
 const connectDB = require('./src/config/db');
 
@@ -30,9 +33,10 @@ app.use(bodyParser.json());
 // Routes
 app.use('/users', userRoutes);
 app.use('/qrs', qrRoutes);
-app.use('./auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/auth', authGoogleRoutes);
-
+app.use('/companies', companyRoutes);
+app.use('/authCompany', authCompanyRoutes);
 
 // DB connection
 connectDB();

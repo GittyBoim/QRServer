@@ -1,6 +1,7 @@
 const { response } = require('express');
 const QR = require('../models/qr');
 const User = require('../models/user');
+const Company = require('../models/company');
 const axios = require('axios');
 
 // Get all QRs for a user
@@ -29,16 +30,31 @@ const getQr = async (req, res) => {
 // Add a new QR
 //🧡 אני רוצה לאפשר יצירה לא לפי user
 const addQr = async (req, res) => {
-  const { userId, expiration, description } = req.body;
+  const { userId, companyId, expiration, description } = req.body;
   try {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    let user = null;
+    if (userId) {
+      user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
     }
-    const newQr = new QR({ user: userId, expiration, description });
+
+    const company = await Company.findById(companyId);
+    if (!company) {
+      return res.status(404).json({ message: 'Company not found' });
+    }
+
+    const newQr = new QR({ user: userId || null, company: companyId, expiration, description });
     await newQr.save();
-    user.qrs.push(newQr);
-    await user.save();
+
+    if (user) {
+      user.qrs.push(newQr);
+      await user.save();
+    }
+
+    company.qrs.push(newQr);
+    await company.save();
 
     // Generate a URL to the Google Chart API to generate a QR
     const qrUrl = `https://unlosted/${newQr._id}`;
@@ -59,6 +75,7 @@ const addQr = async (req, res) => {
 };
 
 // Update QR
+//עדכון משתמש? העברת בעלות איך עושים את זה?
 const updateQr = async (req, res) => {
   try {
     const qr = await QR.findByIdAndUpdate(req.params.id, req.body, { new: true });

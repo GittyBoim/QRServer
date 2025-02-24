@@ -7,6 +7,12 @@ const qrSchema = new mongoose.Schema({
     required: false 
     },
 
+  company: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Company',
+    required: true 
+  },
+
   date: { 
       type: Date, 
       default: Date.now 
@@ -14,7 +20,7 @@ const qrSchema = new mongoose.Schema({
 
   expiration: { 
     type: Date, 
-    required: "true" 
+    required: true
   },
 
   description: { 

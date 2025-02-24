@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const UserController = require('../controllers/userController');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -20,7 +21,7 @@ const login = async (req, res) => {
 
     // Generate JWT
     const token = jwt.sign(
-      { userId: user._id, email: user.email }, 
+      { userId: user._id, email: user.email, role: 'user'}, 
       process.env.JWT_SECRET, 
       { expiresIn: '1h' } 
     );
@@ -41,6 +42,7 @@ const register = async (req, res) => {
 
   try {
     // Creating a new user via userController
+    //עושה שגיאה על שימוש בפונקציה addUser
     const newUser = await UserController.addUser(name, email, password, address, phone);
 
     const token = jwt.sign(
