@@ -1,18 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const companyController = require('../controllers/companyController');
-const authenticateToken = require('../middleware/authenticateToken');
-const authorizeSelfAccess = require('../middleware/authorizeSelfAccess');
-const authorizeAdmin = require('../middleware/authorizeAdmin');
 
-router.get('/', authenticateToken, authorizeAdmin, companyController.getCompanies);
+router.get('/', companyController.getCompanies);
 
-router.get('/:id', authenticateToken, authorizeSelfAccess, companyController.getCompanyById);
+router.get('/:id', companyController.getCompanyById);
 
 router.post('/', companyController.addCompany);
 
-router.put('/:id', authenticateToken, authorizeSelfAccess, companyController.updateCompany);
+router.put('/:id', companyController.updateCompany);
 
-router.delete('/:id', authenticateToken, authorizeSelfAccess, companyController.deleteCompany);
+router.delete('/:id', companyController.deleteCompany);
 
 module.exports = router;

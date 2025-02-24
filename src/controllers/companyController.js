@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const Company = require('../models/company');
+=======
+const Company = require('../models/Company');
+>>>>>>> eaabdc37dc93da08ce99b12d51a662b0f557c28a
 const bcrypt = require('bcrypt');
 
 // Get all Companys
@@ -22,6 +26,7 @@ const getCompanyById = async (req, res) => {
     }
     res.status(200).json(company);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to fetch company' });
   }
 };
